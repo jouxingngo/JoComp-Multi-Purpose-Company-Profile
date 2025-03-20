@@ -12,7 +12,7 @@ class OurTeam extends Model
     protected $fillable = [
         "avatar",
         "name",
-        "ocupation",
+        "occupation",
         "location",
     ];
 }

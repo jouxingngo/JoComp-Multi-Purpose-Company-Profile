@@ -34,7 +34,7 @@
                             <a href="{{ route('admin.abouts.edit',$about) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                                 Edit
                             </a>
-                            <form action=" {{ route('admin.abouts.destroy') }}" method="POST">
+                            <form action=" {{ route('admin.abouts.destroy',$about) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="font-bold py-4 px-6 bg-red-700 text-white rounded-full">
@@ -44,6 +44,7 @@
                         </div>
                     </div>
                 @empty
+                <p>Belum ada data terbaru</p>
                 @endforelse
             </div>
         </div>

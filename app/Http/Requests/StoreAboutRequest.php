@@ -26,6 +26,7 @@ class StoreAboutRequest extends FormRequest
             "name"=> "required|string|max:255",
             "type"=> "required|string|max:255",
             "thumbnail"=> "required|image|mimes:png,jpg,jpeg",
+            'keypoints' => 'required|array|min:1',
             "keypoints.*"=> "required|string|max:255",
         ];
     }

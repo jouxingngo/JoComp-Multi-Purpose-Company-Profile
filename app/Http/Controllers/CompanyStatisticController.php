@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStatisticRequest;
 use App\Models\CompanyStatistic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompanyStatisticController extends Controller
 {
@@ -33,14 +34,25 @@ class CompanyStatisticController extends Controller
     public function store(StoreStatisticRequest $request)
     {
         //insert kepada database pada table tertentu
+        // closure-based transaction
+        DB::transaction(function () use ($request) {
+            $validated = $request->validated();
 
+            if ($request->hasFile("icon")) {
+                $iconPath = $request->file('icon')->store('icon', 'public');
+                $validated['icon'] = $iconPath;
+            }
 
+            $newStatistic = CompanyStatistic::create($validated);
+        });
+
+        return redirect()->route('admin.statistics.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CompanyStatistic $companyStatistic)
+    public function show(CompanyStatistic $statistic)
     {
         //
     }
@@ -48,15 +60,16 @@ class CompanyStatisticController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CompanyStatistic $companyStatistic)
+    public function edit(CompanyStatistic $statistic)
     {
         //
+        return view('admin.statistics.edit', compact('statistic'));
     }
 
     /**
      * Update the specified resource in storage. 
      */
-    public function update(Request $request, CompanyStatistic $companyStatistic)
+    public function update(Request $request, CompanyStatistic $statistic)
     {
         //
     }
@@ -64,8 +77,12 @@ class CompanyStatisticController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CompanyStatistic $companyStatistic)
+    public function destroy(CompanyStatistic $statistic)
     {
         //
+        DB::transaction(function () use ($statistic) {
+            $statistic->delete();
+        });
+        return redirect()->route('admin.statistics.index');
     }
 }

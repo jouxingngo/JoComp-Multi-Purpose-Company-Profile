@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClientRequest;
 use App\Models\ProjectClient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjectClientController extends Controller
 {
@@ -33,12 +34,25 @@ class ProjectClientController extends Controller
     public function store(StoreClientRequest $request)
     {
         //
+        DB::transaction(function () use ($request) {
+            $validated = $request->validated();
+            if ($request->hasFile("avatar")) {
+                $avatarPath = $request->file("avatar")->store("avatar", 'public');
+                $validated['avatar'] = $avatarPath;
+            }
+            if ($request->hasFile("logo")) {
+                $logoPath = $request->file("logo")->store("logo", 'public');
+                $validated['logo'] = $logoPath;
+            }
+            $newProjectClient = ProjectClient::create($validated);
+        });
+        return redirect()->route('admin.clients.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ProjectClient $projectClient)
+    public function show(ProjectClient $client)
     {
         //
     }
@@ -46,15 +60,16 @@ class ProjectClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProjectClient $projectClient)
+    public function edit(ProjectClient $client)
     {
         //
+        return view('admin.clients.edit', compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProjectClient $projectClient)
+    public function update(Request $request, ProjectClient $client)
     {
         //
     }
@@ -62,8 +77,12 @@ class ProjectClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProjectClient $projectClient)
+    public function destroy(ProjectClient $client)
     {
         //
+        DB::transaction(function () use ($client) {
+            $client->delete();
+        });
+        return redirect()->route('admin.clients.index');
     }
 }

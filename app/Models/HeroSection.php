@@ -14,6 +14,6 @@ class HeroSection extends Model
         "heading",
         "subheading",
         "path_video",
-        "banner ",
+        "banner",
     ];
 }

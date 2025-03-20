@@ -8,13 +8,13 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg">
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                     @foreach ($errors->all() as $error)
-                        <div class="py-3 w-full rounded-3xl bg-red-500 text-white">
+                        <div class="py-3 w-full  text-red">
                             {{ $error }}
                         </div>
                     @endforeach
-                @endif
+                @endif --}}
                 <form method="POST" action="{{ route('admin.testimonials.store') }} " enctype="multipart/form-data">
                     @csrf
                     <div class="mt-4">
@@ -28,12 +28,12 @@
                             @endforeach
                         </select>
 
-                        <x-input-error :messages="$errors->get('project_client')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('project_client_id')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
                         <x-input-label for="message" :value="__('message')" />
-                        <textarea name="message" id="message" cols="30" rows="5" class="border border-slate-300 rounded-xl w-full"></textarea>
+                        <textarea name="message" id="message" cols="30" rows="5" required class="border border-slate-300 rounded-xl w-full"></textarea>
                         <x-input-error :messages="$errors->get('message')" class="mt-2" />
                     </div>
 
