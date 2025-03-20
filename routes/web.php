@@ -3,6 +3,9 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\CompanyAboutController;
 use App\Http\Controllers\CompanyStatisticController;
+use App\Http\Controllers\FrontController;
+use App\Http\Controllers\HeroSectionController;
+use App\Http\Controllers\OurPrincipleController;
 use App\Http\Controllers\OurTeamController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -10,10 +13,7 @@ use App\Http\Controllers\ProjectClientController;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get("/", [FrontController::class, 'index'])->middleware('guest')->name('front.index');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -50,6 +50,14 @@ Route::middleware('auth')->group(function () {
 
         Route::middleware('can:manage appointments')->group(function () {
             Route::resource('appointments', AppointmentController::class);
+        });
+
+        Route::middleware('can:manage hero_sections')->group(function () {
+            Route::resource('hero_sections', HeroSectionController::class);
+        });
+
+        Route::middleware('can:manage principles')->group(function () {
+            Route::resource('principles', OurPrincipleController::class);
         });
         
     });

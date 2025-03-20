@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreHeroSectionRequest;
 use App\Models\HeroSection;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,8 @@ class HeroSectionController extends Controller
     public function index()
     {
         //
+        $hero_sections = HeroSection::latest('id')->paginate(10);
+        return view("admin.hero_sections.index", compact("hero_sections"));
     }
 
     /**
@@ -21,12 +24,13 @@ class HeroSectionController extends Controller
     public function create()
     {
         //
+        return view("admin.hero_sections.create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreHeroSectionRequest $request)
     {
         //
     }

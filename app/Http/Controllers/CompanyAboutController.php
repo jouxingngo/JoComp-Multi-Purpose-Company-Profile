@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAboutRequest;
 use App\Models\CompanyAbout;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,8 @@ class CompanyAboutController extends Controller
     public function index()
     {
         //
+        $abouts = CompanyAbout::latest('id')->paginate(10);
+        return view("admin.abouts.index", compact("abouts"));
     }
 
     /**
@@ -21,12 +24,13 @@ class CompanyAboutController extends Controller
     public function create()
     {
         //
+        return view("admin.abouts.create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAboutRequest $request)
     {
         //
     }
