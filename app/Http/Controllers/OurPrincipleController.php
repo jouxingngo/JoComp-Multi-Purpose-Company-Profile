@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePrincipleRequest;
+use App\Http\Requests\UpdatePrincipleRequest;
 use App\Models\OurPrinciple;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class OurPrincipleController extends Controller
 {
@@ -53,7 +55,7 @@ class OurPrincipleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OurPrinciple $ourPrinciple)
+    public function show(OurPrinciple $principle)
     {
         //
     }
@@ -70,9 +72,29 @@ class OurPrincipleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, OurPrinciple $ourPrinciple)
+    public function update(UpdatePrincipleRequest $request, OurPrinciple $principle)
     {
         //
+        DB::transaction(function () use ($request, $principle) {
+            $validated = $request->validated();
+            if ($request->hasFile("thumbnail")) {
+                if ($principle->thumbnail) {
+                    Storage::disk('public')->delete($principle->thumbnail);
+                }
+                $thumbnailPath = $request->file("thumbnail")->store('thumbnail', 'public');
+                $validated['thumbnail'] = $thumbnailPath;
+            }
+            if ($request->hasFile('icon')) {
+                if ($principle->icon) {
+                    Storage::disk('public')->delete($principle->icon);
+                }
+                $iconPath = $request->file('icon')->store('icon', 'public');
+                $validated['icon'] = $iconPath;
+            }
+
+            $principle->update($validated);
+        });
+        return redirect()->route('admin.principles.index');
     }
 
     /**
@@ -82,6 +104,12 @@ class OurPrincipleController extends Controller
     {
         //
         DB::transaction(function () use ($principle) {
+            if ($principle->thumbnail) {
+                Storage::disk('public')->delete($principle->thumbnail);
+            }
+            if ($principle->icon) {
+                Storage::disk('public')->delete($principle->icon);
+            }
             $principle->delete();
         });
         return redirect()->route('admin.principles.index');

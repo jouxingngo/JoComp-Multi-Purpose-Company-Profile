@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAboutRequest;
+use App\Http\Requests\UpdateAboutRequest;
 use App\Models\CompanyAbout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyAboutController extends Controller
 {
@@ -73,9 +75,30 @@ class CompanyAboutController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CompanyAbout $about)
+    public function update(UpdateAboutRequest $request, CompanyAbout $about)
     {
         //
+        DB::transaction(function () use ($request, $about) {
+            $validated = $request->validated();
+            if ($request->hasFile("thumbnail")) {
+                if ($about->thumbnail) {
+                    Storage::disk('public')->delete($about->thumbnail);
+                }
+                $thumbnailPath = $request->file("thumbnail")->store("thumbnail", 'public');
+                $validated['thumbnail'] = $thumbnailPath;
+            }
+            $about->update($validated);
+
+            if (!empty($validated['keypoints'])) {
+                $about->keypoints()->delete();
+                foreach ($validated['keypoints'] as $keypoint) {
+                    $about->keypoints()->create([
+                        'keypoint' => $keypoint
+                    ]);
+                }
+            }
+        });
+        return redirect()->route('admin.abouts.index');
     }
 
     /**
@@ -85,6 +108,10 @@ class CompanyAboutController extends Controller
     {
         //
         DB::transaction(function () use ($about) {
+            if ($about->thumbnail) {
+                Storage::disk('public')->delete($about->thumbnail);
+            }
+            $about->keypoints()->delete();
             $about->delete();
         });
         return redirect()->route('admin.abouts.index');

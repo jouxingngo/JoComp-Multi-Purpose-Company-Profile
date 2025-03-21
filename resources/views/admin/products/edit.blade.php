@@ -10,7 +10,8 @@
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg"> 
                 
                 <form method="POST" action="{{ route('admin.products.update',$product) }} " enctype="multipart/form-data"> 
-                    
+                    @csrf  
+                    @method('PUT')
                     <div>
                         <x-input-label for="name" :value="__('Name')" />
                         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"

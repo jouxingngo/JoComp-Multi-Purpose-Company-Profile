@@ -8,17 +8,20 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg">
-                
-                <form method="POST" action="{{ route('admin.testimonials.update',$testimonial) }} " enctype="multipart/form-data">
 
-@csrf
-@method('PUT')
+                <form method="POST" action="{{ route('admin.testimonials.update', $testimonial) }} "
+                    enctype="multipart/form-data">
+
+                    @csrf
+                    @method('PUT')
                     <div class="mt-4">
                         <x-input-label for="project_client" :value="__('project_client')" />
-                        
-                        <select name="project_client_id" id="project_client_id" class="py-3 rounded-lg pl-3 w-full border border-slate-300">
-                            @forelse ($clients as $client )
-                            <option value="{{ $client->id }}" @selected($testimonial->project_client_id == $client->id)>{{ $client->name }}</option> 
+
+                        <select name="project_client_id" id="project_client_id"
+                            class="py-3 rounded-lg pl-3 w-full border border-slate-300">
+                            @forelse ($clients as $client)
+                                <option value="{{ $client->id }}" @selected($testimonial->project_client_id == $client->id)>{{ $client->name }}
+                                </option>
                             @empty
                                 <option disabled>Data tidak tersedia</option>
                             @endforelse
@@ -35,13 +38,15 @@
 
                     <div class="mt-4">
                         <x-input-label for="thumbnail" :value="__('thumbnail')" />
-                        <img src="{{ Storage::url($testimonial->thumbnail) }} " alt="" class="rounded-2xl object-cover w-[90px] h-[90px]">
-                        <x-text-input id="thumbnail" class="block mt-1 w-full" type="file" name="thumbnail" autofocus autocomplete="thumbnail" />
+                        <img src="{{ Storage::url($testimonial->thumbnail) }} " alt=""
+                            class="rounded-2xl object-cover w-[90px] h-[90px]">
+                        <x-text-input id="thumbnail" class="block mt-1 w-full" type="file" name="thumbnail" autofocus
+                            autocomplete="thumbnail" />
                         <x-input-error :messages="$errors->get('thumbnail')" class="mt-2" />
-                    </div> 
+                    </div>
 
                     <div class="flex items-center justify-end mt-4">
-            
+
                         <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                             Update Testimonial
                         </button>

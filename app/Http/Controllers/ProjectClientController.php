@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Models\ProjectClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectClientController extends Controller
 {
@@ -69,9 +71,28 @@ class ProjectClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProjectClient $client)
+    public function update(UpdateClientRequest $request, ProjectClient $client)
     {
         //
+        DB::transaction(function () use ($request, $client) {
+            $validated = $request->validated();
+            if ($request->hasFile("avatar")) {
+                if ($client->avatar) {
+                    Storage::disk("public")->delete($client->avatar);
+                }
+                $avatarPath = $request->file("avatar")->store("avatar", 'public');
+                $validated['avatar'] = $avatarPath;
+            }
+            if ($request->hasFile("logo")) {
+                if ($client->logo) {
+                    Storage::disk("public")->delete($client->logo);
+                }
+                $logoPath = $request->file("logo")->store("logo", 'public');
+                $validated['logo'] = $logoPath;
+            }
+            $client->update($validated);
+        });
+        return redirect()->route('admin.clients.index');
     }
 
     /**
@@ -81,6 +102,12 @@ class ProjectClientController extends Controller
     {
         //
         DB::transaction(function () use ($client) {
+            if ($client->avatar) {
+                Storage::disk("public")->delete($client->avatar);
+            }
+            if ($client->logo) {
+                Storage::disk("public")->delete($client->logo);
+            }
             $client->delete();
         });
         return redirect()->route('admin.clients.index');
