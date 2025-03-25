@@ -13,7 +13,7 @@ use App\Http\Controllers\ProjectClientController;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
-Route::get("/", [FrontController::class, 'index'])->middleware('guest')->name('front.index');
+Route::get("/", [FrontController::class, 'index'])->name('front.index');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
