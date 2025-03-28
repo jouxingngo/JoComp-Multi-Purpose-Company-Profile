@@ -40,6 +40,8 @@ class AppointmentController extends Controller
     public function show(Appointment $appointment)
     {
         //
+        $appointment = Appointment::findOrFail($appointment->id);
+        return view("admin.appointments.details", compact("appointment"));
     }
 
     /**

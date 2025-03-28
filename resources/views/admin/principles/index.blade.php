@@ -44,6 +44,7 @@
                 @empty
                 <p>Belum ada data terbaru</p>
                 @endforelse
+                {{ $principles->links() }}
             </div>
         </div>
     </div>

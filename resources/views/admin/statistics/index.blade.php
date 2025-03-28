@@ -45,6 +45,7 @@
                 @empty
                     <p>Belum ada data terbaru</p>
                 @endforelse
+                {{ $statistics->links() }}
             </div>
         </div>
     </div>

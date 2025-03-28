@@ -164,14 +164,13 @@
                 </div>
                 <div class="flex flex-col gap-[30px] py-[50px] h-fit max-w-[500px]">
                     <p
-                        class="badge w-fit bg-cp-pale-blue text-cp-light-blue p-[8px_16px] rounded-full uppercase font-bold text-sm">
                         {{ $product->tagline }}</p>
                     <div class="flex flex-col gap-[10px]">
                         <h2 class="font-bold text-4xl leading-[45px]">{{ $product->name }}
                         </h2>
                         <p class="leading-[30px] text-cp-light-grey">{{ $product->about }}</p>
                     </div>
-                    <a href=""
+                    <a href="{{ route('front.appointment',$product->id) }}"
                         class="bg-cp-dark-blue p-[14px_20px] w-fit rounded-xl hover:shadow-[0_12px_30px_0_#312ECB66] transition-all duration-300 font-bold text-white">Book
                         Appointment</a>
                 </div>

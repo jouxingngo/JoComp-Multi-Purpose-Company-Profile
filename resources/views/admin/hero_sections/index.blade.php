@@ -42,6 +42,7 @@
                 @empty
                 <p>Belum ada data terbaru</p>
                 @endforelse
+                {{ $hero_sections->links() }}
             </div>
         </div>
     </div>

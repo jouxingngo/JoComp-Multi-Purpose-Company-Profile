@@ -43,6 +43,7 @@
                 @empty
                 <p>Belum ada data terbaru</p>
                 @endforelse
+                {{ $clients->links() }}
             </div>
         </div>
     </div>

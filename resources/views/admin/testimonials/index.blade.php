@@ -43,6 +43,7 @@
                 @empty
                 <p>Belum ada data terbaru</p>
                 @endforelse
+                {{ $testimonials->links() }}
             </div>
         </div>
     </div>
