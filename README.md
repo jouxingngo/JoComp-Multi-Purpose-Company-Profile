@@ -31,7 +31,8 @@ Live Preview - [https://shaynacomp.jouxingngo.my.id/](https://shaynacomp.jouxing
 
 ## 🚀 **Usage Instructions**
 
-1. **Login ke halaman admin** menggunakan kredensial berikut:  
+1. **Login ke halaman admin** :  
+   - **https://shaynacomp.jouxingngo.my.id/login**
    - **Email**: `super@admin.com`  
    - **Password**: `123123123`
 
