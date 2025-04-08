@@ -1,8 +1,8 @@
-# **Library App**  
+# **ShaynaComp - Multipurpose Company Profile**  
 Live Preview - [https://shaynacomp.jouxingngo.my.id/]([https://library-app.jouxingngo.my.id/](https://shaynacomp.jouxingngo.my.id/))
 <br/>  
 <div align="center">  
-  <img  alt="Demo" src="public/imgs/preview.png" />  
+  <img  alt="Demo" src="public/preview.png" />  
 </div>  
 <br/>  
 <br/>
