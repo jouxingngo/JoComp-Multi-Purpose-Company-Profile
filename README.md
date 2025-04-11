@@ -24,7 +24,7 @@ Live Preview - [https://shaynacomp.jouxingngo.my.id/](https://shaynacomp.jouxing
    ```bash  
    php artisan migrate
 
-5. Migrasi database: 
+5. Seed database: 
    ```bash  
    php artisan db:seed 
 
